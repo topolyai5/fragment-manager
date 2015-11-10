@@ -2,9 +2,6 @@ package com.topolyai.fragmentmanager;
 
 import android.support.v4.app.Fragment;
 
-/**
- * Created by geri on 7/9/2015.
- */
 public class FragmentElement {
     private String name;
     private Fragment fragment;
