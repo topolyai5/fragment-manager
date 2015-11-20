@@ -31,7 +31,7 @@ task makeJar(type: Copy) {
     into(outputDir)
     include('classes.jar')
     rename('classes.jar', fileName)
-
+    logger.info("Version: " + fileName)
 }
 
 dependencies {
