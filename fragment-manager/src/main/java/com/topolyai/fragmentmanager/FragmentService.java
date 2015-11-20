@@ -7,11 +7,14 @@ import android.support.v4.app.FragmentTransaction;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class FragmentService {
 
     private FragmentManager fm;
-    private Fragment lastFragment;
+    private Stack<FragmentElement> fragments = new Stack<>();
+
+    private FragmentElement lastFragment;
 
     public FragmentService(FragmentManager fm) {
         this.fm = fm;
@@ -24,16 +27,27 @@ public class FragmentService {
     public void show(Fragment fragment, String tag, boolean addToBackStack) {
         hide();
         FragmentTransaction transaction = fm.beginTransaction();
+        if (lastFragment != null && lastFragment.isAddtoBackStack()) {
+            fragments.push(lastFragment);
+        }
         if (addToBackStack) {
             transaction.addToBackStack(tag);
         }
         transaction.show(fragment);
+        lastFragment = new FragmentElement(fragment.getTag(), fragment, addToBackStack);
         transaction.commitAllowingStateLoss();
-        setLastFragment(fragment);
     }
 
-    public void pop() {
-        fm.popBackStack();
+    public FragmentElement pop() {
+        lastFragment = (fragments.empty()) ? null : fragments.pop();
+        if (lastFragment != null) {
+            lastFragment.setAddtoBackStack(false);
+        }
+        return lastFragment;
+    }
+
+    public FragmentElement peek() {
+        return lastFragment;
     }
 
     public void replace(int containerViewId, Fragment fragment, String tag) {
@@ -42,24 +56,22 @@ public class FragmentService {
 
     public void replace(int containerViewId, Fragment fragment, String tag, boolean addToBackStack) {
         hide();
-
         FragmentTransaction transaction = fm.beginTransaction();
-        /*if (lastFragment != null) {
-            transaction.hide(lastFragment);
-        }*/
+        if (lastFragment != null && lastFragment.isAddtoBackStack()) {
+            fragments.push(lastFragment);
+        }
         if (addToBackStack) {
             transaction.addToBackStack(tag);
         }
-
         transaction.replace(containerViewId, fragment, tag);
+        lastFragment = new FragmentElement(fragment.getTag(), fragment, addToBackStack);
         transaction.commitAllowingStateLoss();
-        setLastFragment(fragment);
     }
 
     public void hide() {
         if (lastFragment != null) {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.hide(lastFragment);
+            transaction.hide(lastFragment.getFragment());
             transaction.commitAllowingStateLoss();
         }
     }
@@ -67,7 +79,7 @@ public class FragmentService {
     public void remove() {
         if (lastFragment != null) {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.remove(lastFragment);
+            transaction.remove(lastFragment.getFragment());
             transaction.commitAllowingStateLoss();
         }
     }
@@ -78,17 +90,11 @@ public class FragmentService {
         transaction.commitAllowingStateLoss();
     }
 
-    public Fragment getLastFragment() {
+    public FragmentElement getLastFragment() {
         return lastFragment;
     }
 
-    public void setLastFragment(Fragment fragment) {
-        if (fragment.isAdded()) {
-            lastFragment = fragment;
-        }
-    }
-
     public void destroy() {
-        lastFragment = null;
+
     }
 }
