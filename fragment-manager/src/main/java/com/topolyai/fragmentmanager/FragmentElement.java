@@ -6,7 +6,7 @@ public class FragmentElement {
     private String name;
     private Fragment fragment;
     private boolean addtoBackStack;
-
+    private boolean popped;
 
     public FragmentElement(String name, Fragment fragment, boolean addtoBackStack) {
         this.name = name;
@@ -28,5 +28,13 @@ public class FragmentElement {
 
     public void setAddtoBackStack(boolean addtoBackStack) {
         this.addtoBackStack = addtoBackStack;
+    }
+
+    public boolean isPopped() {
+        return popped;
+    }
+
+    public void setPopped(boolean popped) {
+        this.popped = popped;
     }
 }
