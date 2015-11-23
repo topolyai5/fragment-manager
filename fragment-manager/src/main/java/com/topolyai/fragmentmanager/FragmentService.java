@@ -131,7 +131,12 @@ public class FragmentService {
     }
 
     public void clear() {
-        fragments.clear();
+        FragmentElement fragmentElement = popInternal();
+        while (fragmentElement != null) {
+            hide(fragmentElement.getFragment());
+            fragmentElement = popInternal();
+        }
+
         int backStackSize = fm.getBackStackEntryCount();
         for (int i = 0; i < backStackSize; i++) {
             fm.popBackStack();
