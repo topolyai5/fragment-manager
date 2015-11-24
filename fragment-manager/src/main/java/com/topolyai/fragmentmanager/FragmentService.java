@@ -148,6 +148,13 @@ public class FragmentService {
         }
     }
 
+    public void onResume() {
+        FragmentElement fragmentElement = popInternal();
+        if (fragmentElement != null) {
+            show(fragmentElement.getFragment(), fragmentElement.getName(), fragmentElement.isAddtoBackStack());
+        }
+    }
+
     public FragmentElement lastShownFragment() {
         return peekInternal();
     }
