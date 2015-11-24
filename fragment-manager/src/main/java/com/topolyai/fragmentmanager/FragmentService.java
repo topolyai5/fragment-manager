@@ -21,6 +21,11 @@ public class FragmentService {
         show(fragment, tag, addToBackStack);
     }
 
+    public void hideLastAndAdd(int containerViewId, Fragment fragment, String tag, boolean addToBackStack) {
+        hide();
+        add(containerViewId, fragment, tag, addToBackStack);
+    }
+
     public void show(Fragment fragment) {
         show(fragment, null, false);
     }
@@ -81,7 +86,7 @@ public class FragmentService {
         transaction.commitAllowingStateLoss();
     }
 
-    public void hideAndReplace(int containerViewId, Fragment fragment, String tag, boolean addToBackStack) {
+    public void hideLastAndReplace(int containerViewId, Fragment fragment, String tag, boolean addToBackStack) {
         hide();
         replace(containerViewId, fragment, tag, addToBackStack);
     }
