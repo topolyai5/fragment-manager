@@ -115,12 +115,22 @@ public class FragmentService {
     }
 
     public void remove() {
-        FragmentElement lastFragment = pop();
+        FragmentElement lastFragment = popInternal();
         if (lastFragment != null) {
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.remove(lastFragment.getFragment());
             transaction.commitAllowingStateLoss();
         }
+    }
+
+    public void removeLastAndShowPrevoius() {
+        FragmentElement lastFragment = popInternal();
+        if (lastFragment != null) {
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.remove(lastFragment.getFragment());
+            transaction.commitAllowingStateLoss();
+        }
+        onResume();
     }
 
     public void hide(Fragment fragment) {
