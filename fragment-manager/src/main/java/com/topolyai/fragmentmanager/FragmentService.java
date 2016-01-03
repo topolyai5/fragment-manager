@@ -1,5 +1,6 @@
 package com.topolyai.fragmentmanager;
 
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -110,6 +111,15 @@ public class FragmentService {
         FragmentElement pop = pop();
         if (pop != null) {
             show(pop.getFragment(), pop.getName(), pop.isAddtoBackStack());
+        }
+        return pop;
+    }
+
+    public FragmentElement popAndReplace(@IdRes int place) {
+        hide();
+        FragmentElement pop = pop();
+        if (pop != null) {
+            replace(place, pop.getFragment(), pop.getName(), pop.isAddtoBackStack());
         }
         return pop;
     }
