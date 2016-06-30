@@ -17,6 +17,6 @@ allprojects {
         mavenLocal()
     }
 
-    group = 'com.topolyai'
+    group = 'io.fragmentmanager'
     version = '1.0.0'
 }
