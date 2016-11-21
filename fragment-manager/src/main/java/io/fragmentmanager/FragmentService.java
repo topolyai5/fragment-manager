@@ -16,6 +16,8 @@ public class FragmentService {
     public FragmentService(FragmentManager fm) {
         this.fm = fm;
     }
+    public FragmentService() {
+    }
 
     public void hideLastAndShow(Fragment fragment, String tag, boolean addToBackStack) {
         hide();
@@ -82,7 +84,7 @@ public class FragmentService {
 
     public void add(int containerViewId, Fragment fragment, String tag, boolean addToBackStack) {
         FragmentTransaction transaction = fm.beginTransaction();
-        fragments.push(new FragmentElement(tag, fragment, addToBackStack));
+//        fragments.push(new FragmentElement(tag, fragment, addToBackStack));
         transaction.add(containerViewId, fragment, tag);
         transaction.commitAllowingStateLoss();
     }
@@ -177,5 +179,9 @@ public class FragmentService {
 
     public FragmentElement lastShownFragment() {
         return peekInternal();
+    }
+
+    public void setFm(FragmentManager fm) {
+        this.fm = fm;
     }
 }
